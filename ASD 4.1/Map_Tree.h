@@ -1,6 +1,6 @@
 #pragma once
-#include<string>
-#include<iostream>
+#include <string>
+#include <iostream>
 struct Tree
 {
 	std::string data;
@@ -21,11 +21,12 @@ private:
 	void delete_tree(Tree* p);
 	void print(Tree* p, int level = 0) const;
 	Tree* rotate_right(Tree* p);
-	Tree* rotateleft(Tree* q);
+	Tree* rotate_left(Tree* q);
 	Tree* balance(Tree* p);
 	Tree* find_min(Tree* p);
 	Tree* erase_min(Tree* p);
 	Tree* erase_elem(Tree* p, int key);
+	Tree* insert(int key, std::string value, Tree* root);
 public:
 	Map_Tree();
 	~Map_Tree();
@@ -33,5 +34,4 @@ public:
 	bool insert(int key, std::string value);
 	const std::string& find(int key) const;
 	bool erase(int key);
-
-}
+};
