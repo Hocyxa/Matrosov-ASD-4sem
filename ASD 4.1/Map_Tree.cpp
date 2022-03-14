@@ -99,14 +99,45 @@ Tree* Map_Tree::insert(int key, std::string value, Tree* root)
 	return balance(root);
 }
 Map_Tree::Map_Tree()
-{}
+{
+	root = nullptr;
+}
 Map_Tree::~Map_Tree()
-{}
+{
+	delete_tree(root);
+	delete root;
+}
 void Map_Tree::print() const
-{}
+{
+	if (root == nullptr)
+	{
+		std::cout << "Tree clear!!!";
+	}
+	else print(root);
+}
 bool Map_Tree::insert(int key, std::string value)
-{}
+{
+	root = insert(key, value, root);
+	return true;
+}
 const std::string& Map_Tree::find(int key) const
-{}
+{
+	Tree* tmp = root;
+	while (root != nullptr)
+	{
+		if (key < root->key)
+		{
+			tmp = root->left;
+		}
+		else if (key > root->key)
+		{
+			tmp = root->right;
+		}
+		else return tmp->data;
+	}
+}
 bool Map_Tree::erase(int key)
-{}
+{
+	root = erase_elem(root, key);
+	return true;
+}
