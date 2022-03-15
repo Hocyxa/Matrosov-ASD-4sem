@@ -158,7 +158,7 @@ const std::string& Map_Tree::find(int key) const
 			temp = temp->left;
 		}
 	}
-	throw "No elements with this key!";
+	throw "Element not expected!";
 	
 }
 bool Map_Tree::erase(int key)

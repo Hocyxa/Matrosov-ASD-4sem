@@ -19,7 +19,7 @@ private:
 	int bal_factor(Tree* p);
 	void fix_height(Tree* p);
 	void delete_tree(Tree* p);
-	void print(Tree* p, int level = 0) const;
+	void print(Tree* p, int level) const;
 	Tree* rotate_right(Tree* p);
 	Tree* rotate_left(Tree* q);
 	Tree* balance(Tree* p);
