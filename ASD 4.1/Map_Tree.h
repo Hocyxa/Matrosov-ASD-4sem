@@ -30,7 +30,7 @@ private:
 public:
 	Map_Tree();
 	~Map_Tree();
-	void print() const;
+	void Print() const;
 	bool insert(int key, std::string value);
 	const std::string& find(int key) const;
 	bool erase(int key);

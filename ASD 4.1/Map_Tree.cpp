@@ -24,14 +24,14 @@ void Map_Tree::delete_tree(Tree* p)
 		delete p;
 	}
 }
-void Map_Tree::print(Tree* p, int level = 0) const
+void Map_Tree::print(Tree* p, int level ) const
 {
 	if (p)
 	{
-		print(p->left, level + 1);
-		for (int i = 0; i < level; i++) std::cout << "   ,";
-		std::cout << p->key << std::endl;
 		print(p->right, level + 1);
+		for (int i = 0; i < level; i++) std::cout << "   ";
+		std::cout << p->key << std::endl;
+		print(p->left, level + 1);
 	}
 }
 Tree* Map_Tree::rotate_right(Tree* p)
@@ -82,21 +82,44 @@ Tree* Map_Tree::erase_min(Tree* p)
 }
 Tree* Map_Tree::erase_elem(Tree* p, int key)
 {
-	if (!p) return 0;
+	if (!p) return nullptr;
 	if (key < p->key)
+	{
 		p->left = erase_elem(p->left, key);
+	}
 	else if (key > p->key)
+	{
 		p->right = erase_elem(p->right, key);
+	}
+	else
+	{
+		Tree* temp_left = p->left;
+		Tree* temp_right = p->right;
+		delete p;
+		if (!temp_right) return temp_left;
+		Tree* min = find_min(temp_right);
+		min->right = erase_min(temp_right);
+		min->left = temp_left;
+		return balance(min);
+	}
+	return balance(p);
 }
-Tree* Map_Tree::insert(int key, std::string value, Tree* root)
+Tree* Map_Tree::insert(int key, std::string value, Tree* p)
 {
-	if (!root) return new Tree(key, value);
-	else if (key < root->key)
-		root->left = insert(key, value, root->left);
-	else if (key > root->key)
-		root->right = insert(key, value, root->left);
-	else throw "Elem exists";
-	return balance(root);
+	if (p == nullptr)
+	{
+		p = new Tree(key, value);
+	}
+	else if (key < p->key)
+	{
+		p->left = insert(key, value, p->left);
+	}
+	else if (key > p->key)
+	{
+		p->right = insert(key, value, p->right);
+	}
+	else  throw "Element exist!";
+	return balance(p);
 }
 Map_Tree::Map_Tree()
 {
@@ -105,15 +128,15 @@ Map_Tree::Map_Tree()
 Map_Tree::~Map_Tree()
 {
 	delete_tree(root);
-	delete root;
+	root = nullptr;
 }
-void Map_Tree::print() const
+void Map_Tree::Print() const
 {
 	if (root == nullptr)
 	{
 		std::cout << "Tree clear!!!";
 	}
-	else print(root);
+	else print(root, 0);
 }
 bool Map_Tree::insert(int key, std::string value)
 {
@@ -122,19 +145,21 @@ bool Map_Tree::insert(int key, std::string value)
 }
 const std::string& Map_Tree::find(int key) const
 {
-	Tree* tmp = root;
-	while (root != nullptr)
+	Tree* temp = root;
+	while (temp != nullptr)
 	{
-		if (key < root->key)
+		if (key == temp->key) return temp->data;
+		if (key > temp->key)
 		{
-			tmp = root->left;
+			temp = temp->right;
 		}
-		else if (key > root->key)
+		else if (key < temp->key)
 		{
-			tmp = root->right;
+			temp = temp->left;
 		}
-		else return tmp->data;
 	}
+	throw "No elements with this key!";
+	
 }
 bool Map_Tree::erase(int key)
 {
